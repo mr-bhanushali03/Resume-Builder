@@ -14,7 +14,7 @@ include("header.php");
         <img src="images/henil.jpeg" alt="" class="w-75" />
         </div>
         <div class="col-lg-8 col-md-6 col-sm-6">
-          <h2>Welcome to web Development Courses</h2>
+          <h2 id="welcome">Welcome to web Development Courses</h2>
           <p>HTML, CSS, Javascript, PHP etc</p>
         </div>
       </div>

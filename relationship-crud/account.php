@@ -10,7 +10,7 @@ include("header.php");
         include('inc/connect.php');
         if (isset($_POST['submit'])) {
             $error = false;
-            if($_FILES['image']['size'] >= 500000){
+            if ($_FILES['image']['size'] >= 500000) {
                 $error = true;
                 echo $message = "<div class = 'container text-danger mb-3'>File size is greater than 5Mb</div>";
             }
@@ -19,13 +19,13 @@ include("header.php");
                 $error = true;
                 echo $message = "<div class = 'container text-danger mb-3'>Please upload your Image</div>";
             }
-            $imagefiletype = strtolower(pathinfo(basename($_FILES['image']['name']),PATHINFO_EXTENSION));
+            $imagefiletype = strtolower(pathinfo(basename($_FILES['image']['name']), PATHINFO_EXTENSION));
             if (!$error) {
-                $filepath = 'uploads/'.$_SESSION['user'].time().".".$imagefiletype;
-                if(move_uploaded_file($_FILES["image"]["tmp_name"], $filepath)){
-                    $sql = "UPDATE user SET image = '".$filepath."' WHERE id = '" . $_SESSION['user'] . "'";
-                    $con->query($sql);  
-                }else{
+                $filepath = 'uploads/' . $_SESSION['user'] . time() . "." . $imagefiletype;
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $filepath)) {
+                    $sql = "UPDATE user SET image = '" . $filepath . "' WHERE id = '" . $_SESSION['user'] . "'";
+                    $con->query($sql);
+                } else {
                     echo $message = "<div class = 'container text-danger mb-3'>Image not uploaded</div>";
                 }
             }
@@ -36,6 +36,13 @@ include("header.php");
             while ($row = $result->fetch_object()) {
                 $user = $row;
             }
+        }
+
+        $sqlp = "SELECT user.name,role.role,permission.permission FROM user,role,permission,Permission_role WHERE user.role_id=role.id AND Permission_role.role_id=role.id AND Permission_role.permission_id=permission.id AND user.id='". $_SESSION['user']."'";
+        $resultp = $con->query($sqlp);
+        $permission = array();
+        while ($row = $resultp->fetch_object()) {
+            $permission[] = $row->permission;
         }
         $con->close();
         ?>
@@ -55,6 +62,14 @@ include("header.php");
                 <div class="col-md-9">
                     <a href="editprofile.php" class="btn btn-primary float-end ms-2 mb-2">Edit Profile</a>
                     <a href="print.php" class="btn btn-info float-end mb-2">Print Resume</a>
+                    <?php
+                        if (in_array('create_resume',$permission)) {
+                            echo'<a href="create.php" class="btn btn-secondary float-end me-2">Create Resume</a>';
+                        }
+                        if (in_array('send_message',$permission)) {
+                            echo'<a href="chat.php" class="btn btn-secondary float-end me-2">Chat</a>';
+                        }
+                    ?>
                     <table class="table table-striped">
                         <tr>
                             <th colspan="2">Personal Details</th>
