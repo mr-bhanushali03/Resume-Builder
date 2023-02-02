@@ -1,6 +1,6 @@
 <?php
 session_start();
-$title = 'Edit Profile';
+$title = 'Create Resume';
 include("header.php");
 ?>
 <main>
@@ -22,27 +22,21 @@ include("header.php");
             $role = implode(',',$_POST['role']);
             $time = implode(',',$_POST['time']);
             // print_r($name,$country,$state,$languages,$gender,$dob,$qualification,$year,$percent,$company,$role,$time);
-            // $update = "UPDATE user,qualification,company SET user.name='$name',user.country_id=$country,user.state_id=$state,user.language='$languages',user.gender='$gender',user.dob='$dob',qualification.qualification='$qualification',qualification.year=$year,qualification.percentage=$percent,company.name='$company',company.role='$role',company.time='$time' WHERE user.qualification_id=qualification.id AND user.company_id=company.id AND user.id= '" . $_SESSION['user'] . "'";
 
-            $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
-            $userUpdate= $con->query($update);
+            // $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
+            $insert = "INSERT INTO `user`(`id`,`name`, `language`, `gender`, `dob`, `state_id`, `country_id`) VALUES ('$_SESSION[user]','$name','$languages','$gender','$dob','$state','$country')";
+            $userInsert= $con->query($insert);
             
-            $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
-            $qualificationUpdate= $con->query($update);
+            // $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
+            $insert = "INSERT INTO `qualification`(`user_id`,`qualification`, `year`, `percentage`) VALUES ('$_SESSION[user]','$qualification','$year','$percent')";
+            $qualificationInsert= $con->query($insert);
 
-            $update = "UPDATE `company` SET `name`='$company',`role`='$role',`time`='$time' WHERE user_id = '$_SESSION[user]'";
-            $companyUpdate = $con->query($update);
+            // $update = "UPDATE `company` SET `name`='$company',`role`='$role',`time`='$time' WHERE user_id = '$_SESSION[user]'";
+            $insert = "INSERT INTO `company`(`user_id`,`name`, `role`, `time`) VALUES ('$_SESSION[user]','$company','$role','$time')";
+            $companyInsert = $con->query($insert);
 
-            if ($userUpdate && $qualificationUpdate && $companyUpdate) {
+            if ($userInsert && $qualificationInsert && $companyInsert) {
                 header('location: account.php');
-            }
-        }
-
-        $sql = "SELECT * FROM user WHERE id = '" . $_SESSION['user'] . "'";
-        $result = $con->query($sql);
-        if (is_object($result) && ($result->num_rows > 0)) {
-            while ($row = $result->fetch_object()) {
-                $user = $row;
             }
         }
 
@@ -57,7 +51,7 @@ include("header.php");
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="" class="form-label">Full Name</label>
-                        <input type="text" name="name" id="name"  value="<?php echo $user->name ?>" class="form-control" autocomplete="off" required>
+                        <input type="text" name="name" id="name" class="form-control" autocomplete="off" required>
                     </div>
                     <h5>Address Details</h5>
                     <div class="mb-3">
@@ -85,18 +79,6 @@ include("header.php");
                             foreach ($languages as $lang) {
                                 echo '<div class="form-check">
                                         <input type="checkbox" name="languages[]" id="' . $lang . '" value="' . $lang . '" class="form-check-input">
-                                        <label for="' . $lang . '" class="form-check-label">' . $lang . '</label>
-                                    </div>';
-                            }
-                            ?>
-                        </div>
-                        <div class="mb-3 col-6" id="">
-                            <label for="" class="form-label">Languages Known</label>
-                            <?php
-                            $languages = array("English", "Hindi", "Gujarati");
-                            foreach ($languages as $lang) {
-                                echo '<div class="form-check">
-                                        <input type="checkbox" name="languages[]" id="' . $lang . '" value="'. $user->explode(" ","language") .'" class="form-check-input">
                                         <label for="' . $lang . '" class="form-check-label">' . $lang . '</label>
                                     </div>';
                             }
