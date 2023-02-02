@@ -9,8 +9,35 @@ include("header.php");
         <?php
         include('inc/connect.php');
         if (isset($_POST['submit'])) {
-            print_r($_POST);
+            $name = $_POST['name'];
+            $country = $_POST['country'];
+            $state = $_POST['state'];
+            $languages = implode(',',$_POST['languages']);
+            $gender = $_POST['gender'];
+            $dob = $_POST['dob'];
+            $qualification = implode(',',$_POST['qualification']);
+            $year = implode(',',$_POST['year']);
+            $percent = implode(',',$_POST['percent']);
+            $company = implode(',',$_POST['company']);
+            $role = implode(',',$_POST['role']);
+            $time = implode(',',$_POST['time']);
+            // print_r($name,$country,$state,$languages,$gender,$dob,$qualification,$year,$percent,$company,$role,$time);
+            // $update = "UPDATE user,qualification,company SET user.name='$name',user.country_id=$country,user.state_id=$state,user.language='$languages',user.gender='$gender',user.dob='$dob',qualification.qualification='$qualification',qualification.year=$year,qualification.percentage=$percent,company.name='$company',company.role='$role',company.time='$time' WHERE user.qualification_id=qualification.id AND user.company_id=company.id AND user.id= '" . $_SESSION['user'] . "'";
+
+            $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
+           $userUpdate= $con->query($update);
+            
+            $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
+           $qualificationUpdate= $con->query($update);
+
+        $update = "UPDATE `company` SET `name`='$company',`role`='$role',`time`='$time' WHERE user_id = '$_SESSION[user]'";
+           $companyUpdate = $con->query($update);
+
+            if ($userUpdate && $qualificationUpdate && $companyUpdate) {
+                header('location: account.php');
+            }
         }
+
         $sql = "SELECT * FROM user WHERE id = '" . $_SESSION['user'] . "'";
         $result = $con->query($sql);
         if (is_object($result) && ($result->num_rows > 0)) {
@@ -25,7 +52,7 @@ include("header.php");
         ?>
     </div>
     <div class="container-fluid">
-        <form action="" method="post">
+        <form method="post">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -66,11 +93,11 @@ include("header.php");
                         <div class="mb-3 col-6">
                             <label for="" class="form-label">Gender</label>
                             <div class="form-check">
-                                <input type="radio" name="flexRadioDefault" id="male" value="Male" class="form-check-input">
+                                <input type="radio" name="gender" id="male" value="Male" class="form-check-input">
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="flexRadioDefault" id="female" value="Female" class="form-check-input">
+                                <input type="radio" name="gender" id="female" value="Female" class="form-check-input">
                                 <label class="form-check-label" for="female">Female</label>
                             </div>
                         </div>
@@ -102,6 +129,29 @@ include("header.php");
                     </div>
                     <a class="float-end btn btn-info" onclick="addQualification()">Add More</a>
                     <div class="clearfix"></div>
+                    <h5>Work Experience</h5>
+                    <div class="row justify-content-center" id="workInput">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Company</label>
+                                <input type="text" name="company[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <input type="text" name="role[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Year/Month</label>
+                                <input type="text" name="time[]" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="float-end btn btn-info" onclick="addworkexperience()">Add More</a>
+                    <div class="clearfix"></div>
                     <input type="submit" value="submit" class="btn btn-primary" name="submit">
                 </div>
             </div>
@@ -123,7 +173,13 @@ include("header.php");
 
     var qualificationHtml = document.getElementById('qualificationInput').innerHTML;
     function addQualification(){
+        // document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
         document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
+    }
+
+    var workInput = document.getElementById('workInput').innerHTML;
+    function addworkexperience(){
+        document.getElementById('workInput').innerHTML+=workInput;
     }
 </script>
 <?php

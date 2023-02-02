@@ -86,7 +86,7 @@ include("header.php");
                             <th colspan="2">Educational Qualifications</th>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td> </td>
                             <td></td>
                         </tr>
                         <tr>
