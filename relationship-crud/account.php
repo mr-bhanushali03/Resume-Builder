@@ -48,7 +48,7 @@ include("header.php");
         ?>
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 mt-5">
                     <?php if ($user->image == null) { ?>
                         <img class="w-100 rounded col-sm-12 col-md-12 collg-3" src="<?php echo BASEURL; ?>images/user.png" alt="default-profile">
                     <?php } else { ?>
@@ -83,6 +83,14 @@ include("header.php");
                             <td><?php echo $user->email; ?></td>
                         </tr>
                         <tr>
+                            <td>Gender :- </td>
+                            <td><?php echo $user->gender; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Date Of Birth :- </td>
+                            <td><?php echo $user->dob; ?></td>
+                        </tr>
+                        <tr>
                             <th colspan="2">Educational Qualifications</th>
                         </tr>
                         <tr>
@@ -100,8 +108,8 @@ include("header.php");
                             <th colspan="2">Other Details</th>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td>language :- </td>
+                            <td><?php echo $user->language; ?></td>
                         </tr>
                     </table>
                 </div>

@@ -23,9 +23,9 @@ include("header.php");
             $time = implode(',',$_POST['time']);
             // print_r($name,$country,$state,$languages,$gender,$dob,$qualification,$year,$percent,$company,$role,$time);
 
-            // $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
-            $insert = "INSERT INTO `user`(`id`,`name`, `language`, `gender`, `dob`, `state_id`, `country_id`) VALUES ('$_SESSION[user]','$name','$languages','$gender','$dob','$state','$country')";
-            $userInsert= $con->query($insert);
+            $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
+            // $insert = "INSERT INTO `user`(`id`,`name`, `language`, `gender`, `dob`, `state_id`, `country_id`) VALUES ('$_SESSION[user]','$name','$languages','$gender','$dob','$state','$country')";
+            $userInsert= $con->query($update);
             
             // $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
             $insert = "INSERT INTO `qualification`(`user_id`,`qualification`, `year`, `percentage`) VALUES ('$_SESSION[user]','$qualification','$year','$percent')";

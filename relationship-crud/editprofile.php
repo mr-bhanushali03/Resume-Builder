@@ -12,23 +12,23 @@ include("header.php");
             $name = $_POST['name'];
             $country = $_POST['country'];
             $state = $_POST['state'];
-            $languages = implode(',',$_POST['languages']);
+            $languages = implode(',', $_POST['languages']);
             $gender = $_POST['gender'];
             $dob = $_POST['dob'];
-            $qualification = implode(',',$_POST['qualification']);
-            $year = implode(',',$_POST['year']);
-            $percent = implode(',',$_POST['percent']);
-            $company = implode(',',$_POST['company']);
-            $role = implode(',',$_POST['role']);
-            $time = implode(',',$_POST['time']);
+            $qualification = implode(',', $_POST['qualification']);
+            $year = implode(',', $_POST['year']);
+            $percent = implode(',', $_POST['percent']);
+            $company = implode(',', $_POST['company']);
+            $role = implode(',', $_POST['role']);
+            $time = implode(',', $_POST['time']);
             // print_r($name,$country,$state,$languages,$gender,$dob,$qualification,$year,$percent,$company,$role,$time);
             // $update = "UPDATE user,qualification,company SET user.name='$name',user.country_id=$country,user.state_id=$state,user.language='$languages',user.gender='$gender',user.dob='$dob',qualification.qualification='$qualification',qualification.year=$year,qualification.percentage=$percent,company.name='$company',company.role='$role',company.time='$time' WHERE user.qualification_id=qualification.id AND user.company_id=company.id AND user.id= '" . $_SESSION['user'] . "'";
 
-            $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
-            $userUpdate= $con->query($update);
-            
-            $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
-            $qualificationUpdate= $con->query($update);
+            $update = "UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
+            $userUpdate = $con->query($update);
+
+            $update = "UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
+            $qualificationUpdate = $con->query($update);
 
             $update = "UPDATE `company` SET `name`='$company',`role`='$role',`time`='$time' WHERE user_id = '$_SESSION[user]'";
             $companyUpdate = $con->query($update);
@@ -57,7 +57,7 @@ include("header.php");
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="" class="form-label">Full Name</label>
-                        <input type="text" name="name" id="name"  value="<?php echo $user->name ?>" class="form-control" autocomplete="off" required>
+                        <input type="text" name="name" id="name" value="<?php echo $user->name ?>" class="form-control" autocomplete="off" required>
                     </div>
                     <h5>Address Details</h5>
                     <div class="mb-3">
@@ -66,7 +66,11 @@ include("header.php");
                             <option selected>Select country</option>
                             <?php
                             while ($row = $result->fetch_object()) {
-                                echo "<option value = " . $row->id . ">" . $row->name . "</option>";
+                            ?>
+                                <option <?php if ($row->id == $user->country_id) {
+                                            echo 'selected';
+                                        }  ?> value="<?php echo $row->id; ?>"><?php echo $row->name; ?></option>
+                            <?php
                             }
                             ?>
                         </select>
@@ -81,88 +85,88 @@ include("header.php");
                         <div class="mb-3 col-6" id="">
                             <label for="" class="form-label">Languages Known</label>
                             <?php
+                            $languagesArray = explode(' ', $user->language);
                             $languages = array("English", "Hindi", "Gujarati");
                             foreach ($languages as $lang) {
-                                echo '<div class="form-check">
-                                        <input type="checkbox" name="languages[]" id="' . $lang . '" value="' . $lang . '" class="form-check-input">
-                                        <label for="' . $lang . '" class="form-check-label">' . $lang . '</label>
-                                    </div>';
-                            }
                             ?>
-                        </div>
-                        <div class="mb-3 col-6" id="">
-                            <label for="" class="form-label">Languages Known</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="<?php echo $lang; ?>" value="<?php echo $lang; ?>" name="languages[]" <?php if (in_array($lang, $languagesArray)) { ?> checked <?php } ?> class="form-check-input">
+                                    <label for="<?php echo $lang; ?>" class="form-check-label"><?php echo $lang; ?></label>
+                                </div>
                             <?php
-                            $languages = array("English", "Hindi", "Gujarati");
-                            foreach ($languages as $lang) {
-                                echo '<div class="form-check">
-                                        <input type="checkbox" name="languages[]" id="' . $lang . '" value="'. $user->explode(" ","language") .'" class="form-check-input">
-                                        <label for="' . $lang . '" class="form-check-label">' . $lang . '</label>
-                                    </div>';
                             }
                             ?>
                         </div>
                         <div class="mb-3 col-6">
                             <label for="" class="form-label">Gender</label>
                             <div class="form-check">
-                                <input type="radio" name="gender" id="male" value="Male" class="form-check-input">
+                                <input type="radio" name="gender" id="male" value="Male" <?php if ($user->gender == 'Male') {
+                                                                                                echo 'checked';
+                                                                                            } ?> class="form-check-input">
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="gender" id="female" value="Female" class="form-check-input">
+                                <input type="radio" name="gender" id="female" value="Female" <?php if ($user->gender == 'Female') {
+                                                                                                    echo 'checked';
+                                                                                                } ?> class="form-check-input">
                                 <label class="form-check-label" for="female">Female</label>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="dob" class="form-label">Date Of Birth</label>
-                        <input type="date" name="dob" id="dob" placeholder="Date Of Birth" class="form-control">
+                        <input type="date" name="dob" id="dob" value="<?php echo $user->dob; ?>" placeholder="Date Of Birth" class="form-control">
                     </div>
                     <h5>Educational Qualification</h5>
-                    <div class="row" id="qualificationInput">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Qualification</label>
-                                <input type="text" name="qualification[]" class="form-control">
+                    <div id="qualificationInput">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Qualification</label>
+                                    <input type="text" name="qualification[]" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Year</label>
-                                <input type="text" name="year[]" class="form-control">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Year</label>
+                                    <input type="text" name="year[]" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Percent/Marks</label>
-                                <input type="text" name="percent[]" class="form-control">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Percent/Marks</label>
+                                    <input type="text" name="percent[]" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <a class="float-end btn btn-info" onclick="addQualification()">Add More</a>
+
+                    <a class="float-end btn btn-info" id="addQualification">Add More</a>
                     <div class="clearfix"></div>
                     <h5>Work Experience</h5>
-                    <div class="row justify-content-center" id="workInput">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Company</label>
-                                <input type="text" name="company[]" class="form-control">
+                    <div class="justify-content-center" id="workInput">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" name="company[]" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Role</label>
-                                <input type="text" name="role[]" class="form-control">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Role</label>
+                                    <input type="text" name="role[]" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Year/Month</label>
-                                <input type="text" name="time[]" class="form-control">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Year/Month</label>
+                                    <input type="text" name="time[]" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <a class="float-end btn btn-info" onclick="addworkexperience()">Add More</a>
+                    <a class="float-end btn btn-info" id="addworkexperience">Add More</a>
                     <div class="clearfix"></div>
                     <input type="submit" value="submit" class="btn btn-primary" name="submit">
                 </div>
@@ -170,7 +174,11 @@ include("header.php");
         </form>
     </div>
 </main>
+<script src="jquery-3.6.3.js"></script>
 <script>
+    window.addEventListener('load', function() {
+        loadstates(<?php echo $user->country_id; ?>);
+    });
     function loadstates(countryID) {
         let url = "<?php echo BASEURL; ?>formdata/states.php?country=" + countryID;
         var xhttp = new XMLHttpRequest();
@@ -182,17 +190,18 @@ include("header.php");
         xhttp.open("GET", url, true);
         xhttp.send();
     }
-
     var qualificationHtml = document.getElementById('qualificationInput').innerHTML;
-    function addQualification(){
-        // document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
-        document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
-    }
+
+    $('#addQualification').click(function() {
+        $('#qualificationInput').append(qualificationHtml);
+    }); 
 
     var workInput = document.getElementById('workInput').innerHTML;
-    function addworkexperience(){
-        document.getElementById('workInput').innerHTML+=workInput;
-    }
+
+    $('#addworkexperience').click(function() {
+        $('#workInput').append(workInput);
+    });
+
 </script>
 <?php
 include('footer.php');
