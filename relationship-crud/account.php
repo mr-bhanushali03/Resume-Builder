@@ -30,6 +30,8 @@ include("header.php");
                 }
             }
         }
+
+        //user select data query
         $sql = "SELECT * FROM user WHERE id = '" . $_SESSION['user'] . "'";
         $result = $con->query($sql);
         if (is_object($result) && ($result->num_rows > 0)) {
@@ -38,6 +40,25 @@ include("header.php");
             }
         }
 
+        //qualification select data query
+        $qualification = "SELECT * FROM qualification WHERE user_id = '" . $_SESSION['user'] . "'";
+        $qualificationresult = $con->query($qualification);
+        if (is_object($qualificationresult) && ($qualificationresult->num_rows > 0)) {
+            while ($row = $qualificationresult->fetch_object()) {
+                $qualificationresultuser = $row;
+            }
+        }
+
+        //company select data query
+        $company = "SELECT * FROM company WHERE user_id = '" . $_SESSION['user'] . "'";
+        $companyresult = $con->query($company);
+        if (is_object($companyresult) && ($companyresult->num_rows > 0)) {
+            while ($row = $companyresult->fetch_object()) {
+                $companyresultuser = $row;
+            }
+        }
+
+        // Give permission to user 
         $sqlp = "SELECT user.name,role.role,permission.permission FROM user,role,permission,Permission_role WHERE user.role_id=role.id AND Permission_role.role_id=role.id AND Permission_role.permission_id=permission.id AND user.id='". $_SESSION['user']."'";
         $resultp = $con->query($sqlp);
         $permission = array();
@@ -94,8 +115,8 @@ include("header.php");
                             <th colspan="2">Educational Qualifications</th>
                         </tr>
                         <tr>
-                            <td> </td>
-                            <td></td>
+                            <td>Qualifications :- </td>
+                            <td><?php echo $companyresultuser->qualification; ?></td>
                         </tr>
                         <tr>
                             <th colspan="2">Work Experience</th>

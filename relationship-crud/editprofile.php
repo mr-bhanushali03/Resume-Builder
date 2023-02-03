@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 session_start();
 $title = 'Edit Profile';
 include("header.php");
@@ -43,6 +44,22 @@ include("header.php");
         if (is_object($result) && ($result->num_rows > 0)) {
             while ($row = $result->fetch_object()) {
                 $user = $row;
+            }
+        }
+
+        $qualification = "SELECT * FROM qualification WHERE user_id = '" . $_SESSION['user'] . "'";
+        $qualificationresult = $con->query($qualification);
+        if (is_object($qualificationresult) && ($qualificationresult->num_rows > 0)) {
+            while ($row = $qualificationresult->fetch_array()) {
+                $qualificationresultuser = $row;
+            }
+        }
+
+        $company = "SELECT * FROM company WHERE user_id = '" . $_SESSION['user'] . "'";
+        $companyresult = $con->query($company);
+        if (is_object($companyresult) && ($companyresult->num_rows > 0)) {
+            while ($row = $companyresult->fetch_array()) {
+                $companyresultuser = $row;
             }
         }
 
@@ -118,53 +135,78 @@ include("header.php");
                         <input type="date" name="dob" id="dob" value="<?php echo $user->dob; ?>" placeholder="Date Of Birth" class="form-control">
                     </div>
                     <h5>Educational Qualification</h5>
-                    <div id="qualificationInput">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Qualification</label>
-                                    <input type="text" name="qualification[]" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Year</label>
-                                    <input type="text" name="year[]" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Percent/Marks</label>
-                                    <input type="text" name="percent[]" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                    $degree = explode(',', $qualificationresultuser['qualification']);
+                    $year = explode(',', $qualificationresultuser['year']);
+                    $percentage = explode(',', $qualificationresultuser['percentage']);
+                    ?>
 
+
+                    <div id="qualificationInput">
+                        <?php
+
+                        for ($i = 0; $i < count($degree); $i++) {
+                        ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Qualification</label>
+                                        <input type="text" name="qualification[]" value="<?php echo $degree[$i]; ?>" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Year</label>
+                                        <input type="text" name="year[]" value="<?php echo $year[$i]; ?>" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Percent/Marks</label>
+                                        <input type="text" name="percent[]" value="<?php echo $percentage[$i]; ?>" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                     <a class="float-end btn btn-info" id="addQualification">Add More</a>
                     <div class="clearfix"></div>
                     <h5>Work Experience</h5>
+                    <?php
+                    $name = explode(',', $companyresultuser['name']);
+                    $role = explode(',', $companyresultuser['role']);
+                    $time = explode(',', $companyresultuser['time']);
+                    ?>
                     <div class="justify-content-center" id="workInput">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Company</label>
-                                    <input type="text" name="company[]" class="form-control">
+                        <?php
+
+                        for ($i = 0; $i < count($name); $i++) {
+                        ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Company</label>
+                                        <input type="text" name="company[]" value="<?php echo $name[$i];?>" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Role</label>
+                                        <input type="text" name="role[]" value="<?php echo $role[$i];?>" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Year/Month</label>
+                                        <input type="text" name="time[]" value="<?php echo $time[$i];?>" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Role</label>
-                                    <input type="text" name="role[]" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Year/Month</label>
-                                    <input type="text" name="time[]" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <a class="float-end btn btn-info" id="addworkexperience">Add More</a>
                     <div class="clearfix"></div>
@@ -179,6 +221,7 @@ include("header.php");
     window.addEventListener('load', function() {
         loadstates(<?php echo $user->country_id; ?>);
     });
+
     function loadstates(countryID) {
         let url = "<?php echo BASEURL; ?>formdata/states.php?country=" + countryID;
         var xhttp = new XMLHttpRequest();
@@ -190,18 +233,17 @@ include("header.php");
         xhttp.open("GET", url, true);
         xhttp.send();
     }
-    var qualificationHtml = document.getElementById('qualificationInput').innerHTML;
+    var qualificationHtml = "<div class='row'><div class='col-md-4'><div class='mb-3'><label class='form-label'>Qualification</label>             <input type='text' name='qualification[]' class='form-control' /></div></div>     <div class='col-md-4'>         <div class='mb-3'>             <label class='form-label'>Year</label>             <input type='text' name='year[]' class='form-control' />         </div>     </div>     <div class='col-md-4'>         <div class='mb-3'>             <label class='form-label'>Percent/Marks</label>             <input type='text' name='percent[]' class='form-control' />         </div>     </div> </div>";
 
     $('#addQualification').click(function() {
         $('#qualificationInput').append(qualificationHtml);
-    }); 
+    });
 
-    var workInput = document.getElementById('workInput').innerHTML;
+    var workInput = "<div class='row'>     <div class='col-md-4'>         <div class='mb-3'>             <label class='form-label'>Company</label>             <input type='text' name='company[]' class='form-control'>         </div>     </div>     <div class='col-md-4'>         <div class='mb-3'>             <label class='form-label'>Role</label>             <input type='text' name='role[]' class='form-control'>         </div>     </div>     <div class='col-md-4'>         <div class='mb-3'>             <label class='form-label'>Year/Month</label>             <input type='text' name='time[]' class='form-control'>         </div>     </div> </div>";
 
     $('#addworkexperience').click(function() {
         $('#workInput').append(workInput);
     });
-
 </script>
 <?php
 include('footer.php');
