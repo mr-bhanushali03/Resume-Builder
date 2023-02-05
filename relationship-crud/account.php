@@ -59,7 +59,7 @@ include("header.php");
         }
 
         // Give permission to user 
-        $sqlp = "SELECT user.name,role.role,permission.permission FROM user,role,permission,Permission_role WHERE user.role_id=role.id AND Permission_role.role_id=role.id AND Permission_role.permission_id=permission.id AND user.id='". $_SESSION['user']."'";
+        $sqlp = "SELECT user.name,role.role,permission.permission FROM user,role,permission,Permission_role WHERE user.role_id=role.id AND Permission_role.role_id=role.id AND Permission_role.permission_id=permission.id AND user.id='" . $_SESSION['user'] . "'";
         $resultp = $con->query($sqlp);
         $permission = array();
         while ($row = $resultp->fetch_object()) {
@@ -84,53 +84,65 @@ include("header.php");
                     <a href="editprofile.php" class="btn btn-primary float-end ms-2 mb-2">Edit Profile</a>
                     <a href="print.php" class="btn btn-info float-end mb-2">Print Resume</a>
                     <?php
-                        if (in_array('create_resume',$permission)) {
-                            echo'<a href="create.php" class="btn btn-secondary float-end me-2">Create Resume</a>';
-                        }
-                        if (in_array('send_message',$permission)) {
-                            echo'<a href="chat.php" class="btn btn-secondary float-end me-2">Chat</a>';
-                        }
+                    if (in_array('create_resume', $permission)) {
+                        echo '<a href="create.php" class="btn btn-secondary float-end me-2">Create Resume</a>';
+                    }
+                    if (in_array('send_message', $permission)) {
+                        echo '<a href="chat.php" class="btn btn-secondary float-end me-2">Chat</a>';
+                    }
                     ?>
                     <table class="table table-striped">
                         <tr>
-                            <th colspan="2">Personal Details</th>
+                            <th colspan="3">Personal Details</th>
                         </tr>
                         <tr>
-                            <td>Name :- </td>
-                            <td><?php echo $user->name; ?></td>
+                            <td>Name</td>
+                            <td colspan="3"><?php echo $user->name; ?></td>
                         </tr>
                         <tr>
-                            <td>Email :- </td>
-                            <td><?php echo $user->email; ?></td>
+                            <td>Email</td>
+                            <td colspan="3"><?php echo $user->email; ?></td>
                         </tr>
                         <tr>
-                            <td>Gender :- </td>
-                            <td><?php echo $user->gender; ?></td>
+                            <td>Gender</td>
+                            <td colspan="3"><?php echo $user->gender; ?></td>
                         </tr>
                         <tr>
-                            <td>Date Of Birth :- </td>
-                            <td><?php echo $user->dob; ?></td>
+                            <td>Date Of Birth</td>
+                            <td colspan="3"><?php echo $user->dob; ?></td>
                         </tr>
                         <tr>
                             <th colspan="2">Educational Qualifications</th>
                         </tr>
                         <tr>
-                            <td>Qualifications :- </td>
-                            <td><?php echo $companyresultuser->qualification; ?></td>
+                            <th>Qualifications</th>
+                            <th>Year</th>
+                            <th>Percentage</th>
                         </tr>
                         <tr>
-                            <th colspan="2">Work Experience</th>
+                            <td><?php echo $qualificationresultuser->qualification; ?></td>
+                            <td><?php echo $qualificationresultuser->year; ?></td>
+                            <td><?php echo $qualificationresultuser->percentage; ?></td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <th colspan="3">Work Experience</th>
                         </tr>
                         <tr>
-                            <th colspan="2">Other Details</th>
+                            <th>Company Name</th>
+                            <th>Position</th>
+                            <th>Time</th>
                         </tr>
                         <tr>
-                            <td>language :- </td>
-                            <td><?php echo $user->language; ?></td>
+                            <td><?php echo $companyresultuser->name; ?></td>
+                            <td><?php echo $companyresultuser-> role; ?></td>
+                            <td><?php echo $companyresultuser-> time; ?></td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Other Details</th>
+                        </tr>
+                        <tr>
+                            <td>language</td>
+                            <td colspan="3"><?php echo $user->language; ?></td>
                         </tr>
                     </table>
                 </div>
