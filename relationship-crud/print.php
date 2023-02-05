@@ -113,5 +113,6 @@ $pdf->Cell(0, 12, "Percentage : ".$qual->percentage, 0, 1);
 $pdf->Cell(0, 12, "Company Name : ".$comp->name, 0, 1);
 $pdf->Cell(0, 12, "Designation : ".$comp->role, 0, 1);
 $pdf->Cell(0, 12, "Duration : ".$comp->time, 0, 1);
+// header('location:account.php');
 
 $pdf->Output();
