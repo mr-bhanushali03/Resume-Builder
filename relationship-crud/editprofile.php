@@ -5,6 +5,8 @@ $title = 'Edit Profile';
 include("header.php");
 ?>
 <main>
+    <a href="account.php"><button class="btn btn-primary mt-2 ms-2" name="back"><i class="fa fa-arrow-left " aria-hidden="true"></i>
+            Back</button></a>
     <div id="title">
         <h1 class="text-center py-5"><?php echo $title; ?></h1>
         <?php
@@ -188,19 +190,19 @@ include("header.php");
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Company</label>
-                                        <input type="text" name="company[]" value="<?php echo $name[$i];?>" class="form-control">
+                                        <input type="text" name="company[]" value="<?php echo $name[$i]; ?>" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Role</label>
-                                        <input type="text" name="role[]" value="<?php echo $role[$i];?>" class="form-control">
+                                        <input type="text" name="role[]" value="<?php echo $role[$i]; ?>" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Year/Month</label>
-                                        <input type="text" name="time[]" value="<?php echo $time[$i];?>" class="form-control">
+                                        <input type="text" name="time[]" value="<?php echo $time[$i]; ?>" class="form-control">
                                     </div>
                                 </div>
                             </div>

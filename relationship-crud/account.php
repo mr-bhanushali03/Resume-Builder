@@ -5,7 +5,7 @@ include("header.php");
 ?>
 <main>
     <div id="title">
-        <h1 class="text-center py-5">My Account</h1>
+        <h1 class="text-center py-2">My Account</h1>
         <?php
         include('inc/connect.php');
         if (isset($_POST['submit'])) {
@@ -84,9 +84,9 @@ include("header.php");
                     <a href="editprofile.php" class="btn btn-primary float-end ms-2 mb-2">Edit Profile</a>
                     <a href="print.php" class="btn btn-info float-end mb-2">Print Resume</a>
                     <?php
-                    if (in_array('create_resume', $permission)) {
-                        echo '<a href="create.php" class="btn btn-secondary float-end me-2">Create Resume</a>';
-                    }
+                    // if (in_array('create_resume', $permission)) {
+                    //     echo '<a href="create.php" class="btn btn-secondary float-end me-2">Create Resume</a>';
+                    // }
                     if (in_array('send_message', $permission)) {
                         echo '<a href="chat.php" class="btn btn-secondary float-end me-2">Chat</a>';
                     }
