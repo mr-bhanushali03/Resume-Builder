@@ -8,7 +8,7 @@ include("header.php");
     <a href="account.php"><button class="btn btn-primary mt-2 ms-2" name="back"><i class="fa fa-arrow-left " aria-hidden="true"></i>
             Back</button></a>
     <div id="title">
-        <h1 class="text-center py-5"><?php echo $title; ?></h1>
+        <h1 class="text-center py-3"><?php echo $title; ?></h1>
         <?php
         include('inc/connect.php');
         if (isset($_POST['submit'])) {
@@ -70,10 +70,11 @@ include("header.php");
         $con->close();
         ?>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
         <form method="post">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
+            <div class="row">
+                <div class="col-6">
+                    <h5>Personal Details</h5>
                     <div class="mb-3">
                         <label for="" class="form-label">Full Name</label>
                         <input type="text" name="name" id="name" value="<?php echo $user->name ?>" class="form-control" autocomplete="off" required>
@@ -136,6 +137,8 @@ include("header.php");
                         <label for="dob" class="form-label">Date Of Birth</label>
                         <input type="date" name="dob" id="dob" value="<?php echo $user->dob; ?>" placeholder="Date Of Birth" class="form-control">
                     </div>
+                </div>
+                <div class="col-6">
                     <h5>Educational Qualification</h5>
                     <?php
                     $degree = explode(',', $qualificationresultuser['qualification']);

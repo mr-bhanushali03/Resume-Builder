@@ -1,9 +1,9 @@
 <?php
 session_start();
 include('../inc/contants.php');
-if (!isset($_SESSION['user'])) {
-    header("location: login.php");
-}
+// if (!isset($_SESSION['user'])) {
+//     header("location: login.php");
+// }
 if ($_SESSION['role'] != 'Admin') {
     header("location: login.php");
 }

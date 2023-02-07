@@ -12,24 +12,24 @@ include("header.php");
             $name = $_POST['name'];
             $country = $_POST['country'];
             $state = $_POST['state'];
-            $languages = implode(',',$_POST['languages']);
+            $languages = implode(',', $_POST['languages']);
             $gender = $_POST['gender'];
             $dob = $_POST['dob'];
-            $qualification = implode(',',$_POST['qualification']);
-            $year = implode(',',$_POST['year']);
-            $percent = implode(',',$_POST['percent']);
-            $company = implode(',',$_POST['company']);
-            $role = implode(',',$_POST['role']);
-            $time = implode(',',$_POST['time']);
+            $qualification = implode(',', $_POST['qualification']);
+            $year = implode(',', $_POST['year']);
+            $percent = implode(',', $_POST['percent']);
+            $company = implode(',', $_POST['company']);
+            $role = implode(',', $_POST['role']);
+            $time = implode(',', $_POST['time']);
             // print_r($name,$country,$state,$languages,$gender,$dob,$qualification,$year,$percent,$company,$role,$time);
 
-            $update ="UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
+            $update = "UPDATE user SET user.name = '$name',user.dob='$dob',user.gender='$gender',user.language='$languages',user.country_id='$country',user.state_id='$state' WHERE user.id = '$_SESSION[user]'";
             // $insert = "INSERT INTO `user`(`id`,`name`, `language`, `gender`, `dob`, `state_id`, `country_id`) VALUES ('$_SESSION[user]','$name','$languages','$gender','$dob','$state','$country')";
-            $userInsert= $con->query($update);
-            
+            $userInsert = $con->query($update);
+
             // $update ="UPDATE `qualification` SET `qualification`='$qualification',`year`='$year',`percentage`='$percent' WHERE user_id = '$_SESSION[user]'";
             $insert = "INSERT INTO `qualification`(`user_id`,`qualification`, `year`, `percentage`) VALUES ('$_SESSION[user]','$qualification','$year','$percent')";
-            $qualificationInsert= $con->query($insert);
+            $qualificationInsert = $con->query($insert);
 
             // $update = "UPDATE `company` SET `name`='$company',`role`='$role',`time`='$time' WHERE user_id = '$_SESSION[user]'";
             $insert = "INSERT INTO `company`(`user_id`,`name`, `role`, `time`) VALUES ('$_SESSION[user]','$company','$role','$time')";
@@ -45,10 +45,12 @@ include("header.php");
         $con->close();
         ?>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
         <form method="post">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
+            <!-- form-after -->
+            <div class="row">
+                <div class="col-6">
+                <h5>Personal Details</h5>
                     <div class="mb-3">
                         <label for="" class="form-label">Full Name</label>
                         <input type="text" name="name" id="name" class="form-control" autocomplete="off" required>
@@ -100,6 +102,8 @@ include("header.php");
                         <label for="dob" class="form-label">Date Of Birth</label>
                         <input type="date" name="dob" id="dob" placeholder="Date Of Birth" class="form-control">
                     </div>
+                </div>
+                <div class="col-6">
                     <h5>Educational Qualification</h5>
                     <div class="row" id="qualificationInput">
                         <div class="col-md-4">
@@ -149,6 +153,7 @@ include("header.php");
                     <input type="submit" value="submit" class="btn btn-primary" name="submit">
                 </div>
             </div>
+            <!-- form-after -->
         </form>
     </div>
 </main>
@@ -166,14 +171,16 @@ include("header.php");
     }
 
     var qualificationHtml = document.getElementById('qualificationInput').innerHTML;
-    function addQualification(){
+
+    function addQualification() {
         // document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
-        document.getElementById('qualificationInput').innerHTML+=qualificationHtml;
+        document.getElementById('qualificationInput').innerHTML += qualificationHtml;
     }
 
     var workInput = document.getElementById('workInput').innerHTML;
-    function addworkexperience(){
-        document.getElementById('workInput').innerHTML+=workInput;
+
+    function addworkexperience() {
+        document.getElementById('workInput').innerHTML += workInput;
     }
 </script>
 <?php
